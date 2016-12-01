@@ -1,0 +1,10 @@
+
+Pes de la nota final que té cada versió:
+
+v0.1 -- v0.3 = 2.5   (a data d'avui entenc que és: "Crear base de dades")
+        v0.4 = 1.5
+        v0.5 = 1
+        v0.6 = 2
+        v0.7 = 2
+        v0.8 = 1
+
