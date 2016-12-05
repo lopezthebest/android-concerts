@@ -71,6 +71,6 @@ public class Concert {
 
     @Override
     public String toString() {
-        return Id + '\n' + Nom + '\n' + Desc + '\n' + Lloc + '\n' + Data + '\n' + Preu;
+        return String.valueOf(Id) + '\n' + Nom + '\n' + Desc + '\n' + Lloc + '\n' + Data + '\n' + Preu;
     }
 }
