@@ -18,8 +18,7 @@ public class Llista extends AppCompatActivity {
         setContentView(R.layout.activity_llista);
 
         concerts= new ArrayList<>();
-        concerts.add(new Concert("hola","que tal", "dkldslk","djalsdfk","jdkl"));
-        concerts.add(new Concert("1234","567890","fdjkl","fdjkla","dsjkl"));
+        concerts=concertsdb.loadConcerts(Llista.this);
 
         llc=(ListView)findViewById(R.id.llc);
         llc.setAdapter(new ArrayAdapter<>(
