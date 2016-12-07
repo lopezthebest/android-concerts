@@ -23,14 +23,14 @@ public class concertsdb {
                 "CREATE TABLE Concerts (" +
                         "id INTEGER PRIMARY KEY," +
                         "Nom TEXT," +
-                        "Desc TEXT" +
-                        "Lloc TEXT" +
-                        "Dia INTEGER" +
+                        "Desc TEXT," +
+                        "Lloc TEXT," +
+                        "Dia INTEGER," +
                         "Preu INTEGER" +
                         ")";
 
         private static final String SQL_INSERT_1 =
-                "INSERT INTO Concerts Values(1,'Hola','que tal', 'sqlite', '2','3')";
+                "INSERT INTO Concerts Values(1,'Hola','que tal', 'sqlite', 2,3)";
 
         public concertsDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
