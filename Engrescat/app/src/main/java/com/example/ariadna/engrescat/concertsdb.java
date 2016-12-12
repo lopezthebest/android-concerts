@@ -5,8 +5,13 @@ import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import android.util.Log;
+import android.widget.Toast;
+
 
 /**
  * Created by Ariadna on 2/12/2016.
@@ -15,6 +20,117 @@ import java.util.ArrayList;
 public class concertsdb {
 
     private static Context context;
+
+    private static void readConcertsList(SQLiteDatabase db) {
+        ArrayList<String> concert = new ArrayList<>();
+        try {
+            FileInputStream fis = openFileInput("res/raw/Concerts.csv");
+            byte[] buffer = new byte[8000];
+            int nread = fis.read(buffer);
+            if (nread > 0) {
+                String content = new String(buffer, 0, nread);
+                String[] lines = content.split("\n");
+                for (String line : lines) {
+                    String[] parts = line.split(",");
+                    String a="INSERT INTO Concerts Values(" +
+                            Long.parseLong(parts[0])+",'" +
+                            parts[1] +"','" +
+                            parts[2] +"','" +
+                            parts[3] +"','" +
+                            parts[4] +"','" +
+                            parts[5] +"','" +
+                            parts[6] +"','" +
+                            Float.parseFloat(parts[7])+")";
+                    db.execSQL(a);
+                }
+            }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            Log.i("Engrescat", "readItemList: FileNotFoundException");
+        } catch (IOException e) {
+            Log.e("Engrescat", "readItemList: IOException");
+            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void readPoblacionsList(SQLiteDatabase db) {
+        ArrayList<String> concert = new ArrayList<>();
+        try {
+            FileInputStream fis = openFileInput("res/raw/poblacions.csv");
+            byte[] buffer = new byte[8000];
+            int nread = fis.read(buffer);
+            if (nread > 0) {
+                String content = new String(buffer, 0, nread);
+                String[] lines = content.split("\n");
+                for (String line : lines) {
+                    String[] parts = line.split(",");
+                    String a="INSERT INTO Poblacions Values(" +
+                            Long.parseLong(parts[0])+",'" +
+                            parts[1] +")";
+                    db.execSQL(a);
+                }
+            }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            Log.i("Engrescat", "readItemList: FileNotFoundException");
+        } catch (IOException e) {
+            Log.e("Engrescat", "readItemList: IOException");
+            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void readGrupConcertList(SQLiteDatabase db) {
+        ArrayList<String> concert = new ArrayList<>();
+        try {
+            FileInputStream fis = openFileInput("res/raw/grupconcert.csv");
+            byte[] buffer = new byte[8000];
+            int nread = fis.read(buffer);
+            if (nread > 0) {
+                String content = new String(buffer, 0, nread);
+                String[] lines = content.split("\n");
+                for (String line : lines) {
+                    String[] parts = line.split(",");
+                    String a="INSERT INTO GrupConcert Values(" +
+                            Long.parseLong(parts[0])+",'" +
+                            Long.parseLong(parts[1]) +")";
+                    db.execSQL(a);
+                }
+            }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            Log.i("Engrescat", "readItemList: FileNotFoundException");
+        } catch (IOException e) {
+            Log.e("Engrescat", "readItemList: IOException");
+            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void readGrupsList(SQLiteDatabase db) {
+        ArrayList<String> concert = new ArrayList<>();
+        try {
+            FileInputStream fis = openFileInput("res/raw/grups.csv");
+            byte[] buffer = new byte[8000];
+            int nread = fis.read(buffer);
+            if (nread > 0) {
+                String content = new String(buffer, 0, nread);
+                String[] lines = content.split("\n");
+                for (String line : lines) {
+                    String[] parts = line.split(",");
+                    String a="INSERT INTO Grups Values(" +
+                            Long.parseLong(parts[0])+",'" +
+                            parts[1] +")";
+                    db.execSQL(a);
+                }
+            }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            Log.i("Engrescat", "readItemList: FileNotFoundException");
+        } catch (IOException e) {
+            Log.e("Engrescat", "readItemList: IOException");
+            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     static class concertsDbHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "concerts.db";
         private static final int DATABASE_VERSION = 1;
@@ -77,17 +193,20 @@ public class concertsdb {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(SQL_CREATE_TAULA_CONCERTS);
             db.execSQL(SQL_CREATE_TAULA_POBLACIONS);
-            db.execSQL(SQL_CREATE_TAULA_GRUPCONCERT);
+            db.execSQL(SQL_CREATE_TAULA_CONCERTS);
             db.execSQL(SQL_CREATE_TAULA_GRUPS);
-            db.execSQL(SQL_INSERT_CONCERTS);
-            db.execSQL(SQL_INSERT_POBLACIONS);
-            db.execSQL(SQL_INSERT_GRUPCONCERT);
-            db.execSQL(SQL_INSERT_GRUPS);
-            db.execSQL(SQL_INSERT_GRUPCONCERT2);
-            db.execSQL(SQL_INSERT_GRUPS2);
-
+            db.execSQL(SQL_CREATE_TAULA_GRUPCONCERT);
+            //db.execSQL(SQL_INSERT_CONCERTS);
+            //db.execSQL(SQL_INSERT_POBLACIONS);
+            //db.execSQL(SQL_INSERT_GRUPS);
+            //db.execSQL(SQL_INSERT_GRUPS2);
+            //db.execSQL(SQL_INSERT_GRUPCONCERT);
+            //db.execSQL(SQL_INSERT_GRUPCONCERT2);
+            readPoblacionsList(db);
+            readConcertsList(db);
+            readGrupsList(db);
+            readGrupConcertList(db);
         }
 
         @Override
