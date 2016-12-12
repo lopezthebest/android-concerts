@@ -21,10 +21,14 @@ public class concertsdb {
 
     private static Context context;
 
-    private static void readConcertsList(SQLiteDatabase db) {
+    public static void setContext(Context context) {
+        concertsdb.context = context;
+    }
+
+    public static void readConcertsList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = openFileInput("res/raw/Concerts.csv");
+            FileInputStream fis = context.openFileInput("res/raw/Concerts.csv");
             byte[] buffer = new byte[8000];
             int nread = fis.read(buffer);
             if (nread > 0) {
@@ -40,8 +44,9 @@ public class concertsdb {
                             parts[4] +"','" +
                             parts[5] +"','" +
                             parts[6] +"','" +
-                            Float.parseFloat(parts[7])+")";
+                            Float.parseFloat(parts[7])+");";
                     db.execSQL(a);
+                    Log.i("Engrescat", a);
                 }
             }
             fis.close();
@@ -56,7 +61,7 @@ public class concertsdb {
     private static void readPoblacionsList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = openFileInput("res/raw/poblacions.csv");
+            FileInputStream fis = context.openFileInput("poblacions.csv");
             byte[] buffer = new byte[8000];
             int nread = fis.read(buffer);
             if (nread > 0) {
@@ -66,8 +71,9 @@ public class concertsdb {
                     String[] parts = line.split(",");
                     String a="INSERT INTO Poblacions Values(" +
                             Long.parseLong(parts[0])+",'" +
-                            parts[1] +")";
+                            parts[1] +");";
                     db.execSQL(a);
+                    Log.i("Engrescat", a);
                 }
             }
             fis.close();
@@ -82,7 +88,7 @@ public class concertsdb {
     private static void readGrupConcertList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = openFileInput("res/raw/grupconcert.csv");
+            FileInputStream fis = context.openFileInput("grupconcert.csv");
             byte[] buffer = new byte[8000];
             int nread = fis.read(buffer);
             if (nread > 0) {
@@ -92,8 +98,9 @@ public class concertsdb {
                     String[] parts = line.split(",");
                     String a="INSERT INTO GrupConcert Values(" +
                             Long.parseLong(parts[0])+",'" +
-                            Long.parseLong(parts[1]) +")";
+                            Long.parseLong(parts[1]) +");";
                     db.execSQL(a);
+                    Log.i("Engrescat", a);
                 }
             }
             fis.close();
@@ -108,7 +115,7 @@ public class concertsdb {
     private static void readGrupsList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = openFileInput("res/raw/grups.csv");
+            FileInputStream fis = context.openFileInput("grups.csv");
             byte[] buffer = new byte[8000];
             int nread = fis.read(buffer);
             if (nread > 0) {
@@ -118,8 +125,9 @@ public class concertsdb {
                     String[] parts = line.split(",");
                     String a="INSERT INTO Grups Values(" +
                             Long.parseLong(parts[0])+",'" +
-                            parts[1] +")";
+                            parts[1] +");";
                     db.execSQL(a);
+                    Log.i("Engrescat", a);
                 }
             }
             fis.close();
@@ -203,10 +211,6 @@ public class concertsdb {
             //db.execSQL(SQL_INSERT_GRUPS2);
             //db.execSQL(SQL_INSERT_GRUPCONCERT);
             //db.execSQL(SQL_INSERT_GRUPCONCERT2);
-            readPoblacionsList(db);
-            readConcertsList(db);
-            readGrupsList(db);
-            readGrupConcertList(db);
         }
 
         @Override
@@ -217,13 +221,17 @@ public class concertsdb {
 
     private static concertsDbHelper helper;
 
-    public static ArrayList<Concert> loadConcerts(Context context){
+    public static ArrayList<Concert> loadConcerts(){
         ArrayList<Concert> resultat= new ArrayList<>();
         if (helper == null) {
             helper = new concertsDbHelper(context);
         }
 
         SQLiteDatabase db =helper.getReadableDatabase();
+        readPoblacionsList(db);
+        readConcertsList(db);
+        readGrupsList(db);
+        readGrupConcertList(db);
 
         Cursor c = db.query("Concerts", null, null, null, null, null, null);
         if (c != null && c.getCount() > 0) {

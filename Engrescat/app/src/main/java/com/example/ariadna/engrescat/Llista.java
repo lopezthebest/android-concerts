@@ -1,5 +1,6 @@
 package com.example.ariadna.engrescat;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -17,8 +18,11 @@ public class Llista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_llista);
 
+        concertsdb.setContext(this);
+
         concerts= new ArrayList<>();
-        concerts=concertsdb.loadConcerts(Llista.this);
+
+        concerts=concertsdb.loadConcerts();
 
         llc=(ListView)findViewById(R.id.llc);
         llc.setAdapter(new ArrayAdapter<>(
