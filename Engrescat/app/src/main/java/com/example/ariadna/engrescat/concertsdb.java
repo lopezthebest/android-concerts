@@ -2,12 +2,15 @@ package com.example.ariadna.engrescat;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import java.io.FileInputStream;
+
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,114 +31,78 @@ public class concertsdb {
     public static void readConcertsList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = context.openFileInput("res/raw/Concerts.csv");
-            byte[] buffer = new byte[8000];
-            int nread = fis.read(buffer);
-            if (nread > 0) {
-                String content = new String(buffer, 0, nread);
-                String[] lines = content.split("\n");
-                for (String line : lines) {
+            InputStreamReader is= new InputStreamReader(context.getAssets().open("concerts.csv"));
+            BufferedReader reader = new BufferedReader(is);
+            String line;
+            while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
                     String a="INSERT INTO Concerts Values(" +
                             Long.parseLong(parts[0])+",'" +
                             parts[1] +"','" +
                             parts[2] +"','" +
                             parts[3] +"','" +
-                            parts[4] +"','" +
-                            parts[5] +"','" +
+                            parts[4] +"'," +
+                            Float.parseFloat(parts[5]) +",'" +
                             parts[6] +"','" +
-                            Float.parseFloat(parts[7])+");";
+                            parts[7]+"');";
                     db.execSQL(a);
-                    Log.i("Engrescat", a);
                 }
-            }
-            fis.close();
-        } catch (FileNotFoundException e) {
-            Log.i("Engrescat", "readItemList: FileNotFoundException");
-        } catch (IOException e) {
-            Log.e("Engrescat", "readItemList: IOException");
-            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+            } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
     private static void readPoblacionsList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = context.openFileInput("poblacions.csv");
-            byte[] buffer = new byte[8000];
-            int nread = fis.read(buffer);
-            if (nread > 0) {
-                String content = new String(buffer, 0, nread);
-                String[] lines = content.split("\n");
-                for (String line : lines) {
+            InputStreamReader is= new InputStreamReader(context.getAssets().open("poblacions.csv"));
+            BufferedReader reader = new BufferedReader(is);
+            String line;
+            while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
                     String a="INSERT INTO Poblacions Values(" +
                             Long.parseLong(parts[0])+",'" +
-                            parts[1] +");";
+                            parts[1] +"');";
                     db.execSQL(a);
-                    Log.i("Engrescat", a);
                 }
-            }
-            fis.close();
-        } catch (FileNotFoundException e) {
-            Log.i("Engrescat", "readItemList: FileNotFoundException");
-        } catch (IOException e) {
-            Log.e("Engrescat", "readItemList: IOException");
-            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     private static void readGrupConcertList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = context.openFileInput("grupconcert.csv");
-            byte[] buffer = new byte[8000];
-            int nread = fis.read(buffer);
-            if (nread > 0) {
-                String content = new String(buffer, 0, nread);
-                String[] lines = content.split("\n");
-                for (String line : lines) {
+            InputStreamReader is= new InputStreamReader(context.getAssets().open("grupconcert.csv"));
+            BufferedReader reader = new BufferedReader(is);
+            String line;
+            while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
                     String a="INSERT INTO GrupConcert Values(" +
-                            Long.parseLong(parts[0])+",'" +
+                            Long.parseLong(parts[0])+"," +
                             Long.parseLong(parts[1]) +");";
                     db.execSQL(a);
-                    Log.i("Engrescat", a);
                 }
-            }
-            fis.close();
-        } catch (FileNotFoundException e) {
-            Log.i("Engrescat", "readItemList: FileNotFoundException");
-        } catch (IOException e) {
-            Log.e("Engrescat", "readItemList: IOException");
-            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+            } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
     private static void readGrupsList(SQLiteDatabase db) {
         ArrayList<String> concert = new ArrayList<>();
         try {
-            FileInputStream fis = context.openFileInput("grups.csv");
-            byte[] buffer = new byte[8000];
-            int nread = fis.read(buffer);
-            if (nread > 0) {
-                String content = new String(buffer, 0, nread);
-                String[] lines = content.split("\n");
-                for (String line : lines) {
+            InputStreamReader is= new InputStreamReader(context.getAssets().open("grups.csv"));
+            BufferedReader reader = new BufferedReader(is);
+            String line;
+            while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
                     String a="INSERT INTO Grups Values(" +
                             Long.parseLong(parts[0])+",'" +
-                            parts[1] +");";
+                            parts[1] +"');";
                     db.execSQL(a);
-                    Log.i("Engrescat", a);
                 }
-            }
-            fis.close();
-        } catch (FileNotFoundException e) {
-            Log.i("Engrescat", "readItemList: FileNotFoundException");
-        } catch (IOException e) {
-            Log.e("Engrescat", "readItemList: IOException");
-            Toast.makeText(context, "no es pot llegir", Toast.LENGTH_SHORT).show();
+            } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
@@ -211,6 +178,10 @@ public class concertsdb {
             //db.execSQL(SQL_INSERT_GRUPS2);
             //db.execSQL(SQL_INSERT_GRUPCONCERT);
             //db.execSQL(SQL_INSERT_GRUPCONCERT2);
+            readPoblacionsList(db);
+            readConcertsList(db);
+            readGrupsList(db);
+            readGrupConcertList(db);
         }
 
         @Override
@@ -228,10 +199,6 @@ public class concertsdb {
         }
 
         SQLiteDatabase db =helper.getReadableDatabase();
-        readPoblacionsList(db);
-        readConcertsList(db);
-        readGrupsList(db);
-        readGrupConcertList(db);
 
         Cursor c = db.query("Concerts", null, null, null, null, null, null);
         if (c != null && c.getCount() > 0) {
