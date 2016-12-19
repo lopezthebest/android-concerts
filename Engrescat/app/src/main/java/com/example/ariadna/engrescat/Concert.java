@@ -113,6 +113,6 @@ public class Concert {
                 '\n' + Adr +
                 '\n' + Pobl +
                 '\n' + Preu +"€"+
-                '\n' + Desc;
+                '\n' + Desc+'\n';
     }
 }
