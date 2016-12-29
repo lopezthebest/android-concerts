@@ -228,7 +228,11 @@ public class concertsdb {
                 }
                 Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-                resultat.add(new Concert(id, nom, grups, datahora, lloc, adr, pobl, preu, desc));
+                //!!!!!
+                //Assignar aqui nom imatge!!!!
+                //!!!!!!!
+                Integer[] img = R.drawable.aa;
+                resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
             }
         }
         if (c != null) {

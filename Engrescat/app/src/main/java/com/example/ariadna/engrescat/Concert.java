@@ -10,6 +10,7 @@ import java.util.PriorityQueue;
 
 public class Concert {
     private long Id;
+    private Integer[] Img;
     private String Nom;
     private ArrayList<String> Grups;
     private String DataHora;
@@ -19,8 +20,9 @@ public class Concert {
     private Float  Preu;
     private String Desc;
 
-    public Concert(long id, String nom, ArrayList<String> grups, String dataHora, String lloc, String adr,String pobl, Float preu, String desc) {
+    public Concert(long id,Integer[] img, String nom, ArrayList<String> grups, String dataHora, String lloc, String adr,String pobl, Float preu, String desc) {
         Id = id;
+        Img=img;
         Nom = nom;
         Grups = grups;
         DataHora = dataHora;
@@ -38,6 +40,10 @@ public class Concert {
     public void setId(long id) {
         Id = id;
     }
+
+    public Integer[] getImg() { return Img; }
+
+    public void setImg(Integer[] img) { Img = img; }
 
     public String getNom() {
         return Nom;

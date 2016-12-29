@@ -14,8 +14,6 @@
         android:id="@+id/imatge"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/data_grup"
-        android:layout_below="@+id/data_grup"
         android:layout_alignTop="@+id/nom_concert"
         android:layout_centerVertical="true"
         android:layout_marginTop="6dp"/>
@@ -26,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginLeft="56dp"
-        android:layout_below="@+id/data_grup"
         android:text="Nombre"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Nom del grup" />
@@ -45,7 +42,6 @@
         android:id="@+id/hora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/nom_concert"
         android:layout_below="@+id/poblacio"
         android:text="Compañía"
         tools:text="Hora" />
