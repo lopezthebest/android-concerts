@@ -42,7 +42,6 @@
         android:id="@+id/hora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/poblacio"
         android:layout_below="@+id/poblacio"
         android:text="Compañía"
         tools:text="Hora" />
