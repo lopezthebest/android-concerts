@@ -67,7 +67,7 @@ public class Llista extends AppCompatActivity {
             TextView poble = (TextView)result.findViewById(R.id.poblacio);
             poble.setText(con.getPobl());
             TextView hora = (TextView) result.findViewById(R.id.hora);
-            hora.setText(con.getDataHora().substring(con.getDataHora().indexOf(" ") + 1));
+            hora.setText(con.getDataHora());
 
             // Lead actual.
             //concerts lead = getItem(position);
