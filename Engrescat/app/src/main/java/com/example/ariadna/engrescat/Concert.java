@@ -1,5 +1,7 @@
 package com.example.ariadna.engrescat;
 
+import android.graphics.Bitmap;
+
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -10,7 +12,7 @@ import java.util.PriorityQueue;
 
 public class Concert {
     private long Id;
-    private Integer[] Img;
+    private Bitmap Img;
     private String Nom;
     private ArrayList<String> Grups;
     private String DataHora;
@@ -20,7 +22,7 @@ public class Concert {
     private Float  Preu;
     private String Desc;
 
-    public Concert(long id,Integer[] img, String nom, ArrayList<String> grups, String dataHora, String lloc, String adr,String pobl, Float preu, String desc) {
+    public Concert(long id, Bitmap img, String nom, ArrayList<String> grups, String dataHora, String lloc, String adr,String pobl, Float preu, String desc) {
         Id = id;
         Img=img;
         Nom = nom;
@@ -41,9 +43,9 @@ public class Concert {
         Id = id;
     }
 
-    public Integer[] getImg() { return Img; }
+    public Bitmap getImg() { return Img; }
 
-    public void setImg(Integer[] img) { Img = img; }
+    public void setImg(Bitmap img) { Img = img; }
 
     public String getNom() {
         return Nom;

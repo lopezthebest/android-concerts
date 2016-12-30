@@ -2,6 +2,7 @@ package com.example.ariadna.engrescat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,27 +23,31 @@ public class Llista extends AppCompatActivity {
 
 
     public class ConcertsAdapter extends ArrayAdapter<Concert> {
-        private final Activity context;
+        /*private final Activity context;
         private final String[] itemname;
-        private final Integer[] integers;
+        private final Bitmap integers;*/
 
-        ConcertsAdapter(Activity context, String[] itemname, Integer[] integers) {
-            super(Llista.this, R.layout.item_concert, concertsdb.loadConcerts());
-            this.context=context;
-            this.itemname=itemname;
-            this.integers=integers;
+        /*ConcertsAdapter(Activity context, String[] itemname, Bitmap integers) {
+        super(Llista.this, R.layout.item_concert, concertsdb.loadConcerts());
+        this.context=context;
+        this.itemname=itemname;
+        this.integers=integers;
+    }*/
+        ConcertsAdapter() {
+            super(Llista.this, R.layout.item_concert,
+                    concertsdb.loadConcerts());
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            /*View result = convertView;
+            View result = convertView;
             if (result == null) {
                 LayoutInflater inflater = getLayoutInflater();
                 result = inflater.inflate(R.layout.item_concert, parent, false);
-            }*/
+            }
             // Obtener inflater.
-            LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            /*LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);*/
 
             // ¿Existe el view actual?
            /* if (null == convertView) {
@@ -54,20 +59,23 @@ public class Llista extends AppCompatActivity {
 
             // Referencias UI.
 
-            //Concert con =getItem(position);
-            ImageView avatar = (ImageView) convertView.findViewById(R.id.imatge);
-            TextView nom = (TextView) convertView.findViewById(R.id.nom_concert);
-            TextView poble = (TextView) convertView.findViewById(R.id.poblacio);
-            TextView hora = (TextView) convertView.findViewById(R.id.hora);
+            Concert con =getItem(position);
+            ImageView im=(ImageView)result.findViewById(R.id.imatge);
+            im.setImageBitmap(con.getImg());
+            TextView nom = (TextView) result.findViewById(R.id.nom_concert);
+            nom.setText(con.getNom());
+            TextView poble = (TextView)result.findViewById(R.id.poblacio);
+            poble.setText(con.getPobl());
+            TextView hora = (TextView) result.findViewById(R.id.hora);
+            hora.setText(con.getDataHora().substring(con.getDataHora().indexOf(" ") + 1));
 
             // Lead actual.
             //concerts lead = getItem(position);
 
-            avatar.setImageResource(position);
+            /*avatar.setImageBitmap(integers[position]);
             nom.setText(itemname[position]);
             poble.setText(itemname[position]);
-            hora.setText(itemname[position]);
-
+            hora.setText(itemname[position]);*/
 
             // Setup.
             /*Concert.with(getContext()).load(lead.getImage()).into(avatar);

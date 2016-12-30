@@ -8,10 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -231,7 +235,15 @@ public class concertsdb {
                 //!!!!!
                 //Assignar aqui nom imatge!!!!
                 //!!!!!!!
-                Integer[] img = R.drawable.aa;
+                Bitmap img = null;
+
+                try{
+                    FileInputStream fileInputStream =
+                            new FileInputStream(context.getFilesDir().getPath()+ "a"+id+".jpg");
+                    img = BitmapFactory.decodeStream(fileInputStream);
+                }catch (IOException io){
+                    io.printStackTrace();
+                }
                 resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
             }
         }
