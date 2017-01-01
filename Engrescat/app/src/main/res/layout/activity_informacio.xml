@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_informacio"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?attr/listPreferredItemHeight"
-    android:orientation="vertical"
-    android:paddingBottom="8dp"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="8dp">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.ariadna.engrescat.Informacio">
+
 
     <ImageView
         android:id="@+id/imatge"
@@ -37,22 +38,59 @@
         android:text="Lloc"
         tools:text="Ciutat i/o sala" />
 
+    <TextView
+        android:id="@+id/adreca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/poblacio"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:text="Adreça"
+        tools:text="Adreça" />
 
     <TextView
         android:id="@+id/hora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/poblacio"
+        android:layout_below="@+id/adreca"
         android:text="Compañía"
         tools:text="Hora" />
+
+    <TextView
+        android:id="@+id/descripcio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hora"
+        android:text="Descripció"
+        tools:text="Descripció" />
+
+    <TextView
+        android:id="@+id/grups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Grups que actuen:"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_below="@+id/descripcio"
+        tools:text="Grups que actuen:" />
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/llg"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/grups"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/preu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="70dp"
-        android:layout_alignLeft="@+id/nom_concert"
-        android:layout_below="@+id/poblacio"
         android:text="Price"
-        tools:text="Preu" />
+        tools:text="Preu"
+        android:layout_below="@+id/adreca"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

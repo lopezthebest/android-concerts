@@ -2,12 +2,16 @@ package com.example.ariadna.engrescat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -23,16 +27,6 @@ public class Llista extends AppCompatActivity {
 
 
     public class ConcertsAdapter extends ArrayAdapter<Concert> {
-        /*private final Activity context;
-        private final String[] itemname;
-        private final Bitmap integers;*/
-
-        /*ConcertsAdapter(Activity context, String[] itemname, Bitmap integers) {
-        super(Llista.this, R.layout.item_concert, concertsdb.loadConcerts());
-        this.context=context;
-        this.itemname=itemname;
-        this.integers=integers;
-    }*/
         ConcertsAdapter() {
             super(Llista.this, R.layout.item_concert,
                     concertsdb.loadConcerts());
@@ -45,17 +39,6 @@ public class Llista extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 result = inflater.inflate(R.layout.item_concert, parent, false);
             }
-            // Obtener inflater.
-            /*LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);*/
-
-            // ¿Existe el view actual?
-           /* if (null == convertView) {
-                convertView = inflater.inflate(
-                        R.layout.item_concert,
-                        parent,
-                        false);
-            }*/
 
             // Referencias UI.
 
@@ -68,22 +51,10 @@ public class Llista extends AppCompatActivity {
             poble.setText(con.getPobl());
             TextView hora = (TextView) result.findViewById(R.id.hora);
             hora.setText(con.getDataHora());
+            TextView preu = (TextView) result.findViewById(R.id.preu);
+            preu.setText(con.getPreu()+"€");
 
-            // Lead actual.
-            //concerts lead = getItem(position);
-
-            /*avatar.setImageBitmap(integers[position]);
-            nom.setText(itemname[position]);
-            poble.setText(itemname[position]);
-            hora.setText(itemname[position]);*/
-
-            // Setup.
-            /*Concert.with(getContext()).load(lead.getImage()).into(avatar);
-            nom.setText(lead.getNom());
-            poble.setText(lead.getPobl());
-            hora.setText(lead.getDataHora());*/
-
-            return convertView;
+            return result;
         }
     }
 
@@ -104,5 +75,17 @@ public class Llista extends AppCompatActivity {
 
         llc=(ListView)findViewById(R.id.llc);
         llc.setAdapter(adapter);
+
+        llc.setClickable(true);
+        llc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                Intent intent = new Intent(getApplicationContext(), Informacio.class);
+                //intent.putExtra("EXTRA_IDCONCERT", adapter.getItem(position).getId());
+                intent.putExtra("EXTRA_IDCONCERT", (int)arg3);
+                startActivity(intent);
+            }
+        });
     }
+
 }
