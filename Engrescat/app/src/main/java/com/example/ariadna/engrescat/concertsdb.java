@@ -39,19 +39,19 @@ public class concertsdb {
             BufferedReader reader = new BufferedReader(is);
             String line;
             while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",");
-                    String a="INSERT INTO Concerts Values(" +
-                            Long.parseLong(parts[0])+",'" +
-                            parts[1] +"','" +
-                            parts[2] +"','" +
-                            parts[3] +"','" +
-                            parts[4] +"'," +
-                            Float.parseFloat(parts[5]) +",'" +
-                            parts[6] +"','" +
-                            parts[7]+"');";
-                    db.execSQL(a);
-                }
-            } catch (IOException e1) {
+                String[] parts = line.split(",");
+                String a="INSERT INTO Concerts Values(" +
+                        Long.parseLong(parts[0])+",'" +
+                        parts[1] +"','" +
+                        parts[2] +"','" +
+                        parts[3] +"','" +
+                        parts[4] +"'," +
+                        Float.parseFloat(parts[5]) +",'" +
+                        parts[6] +"','" +
+                        parts[7]+"');";
+                db.execSQL(a);
+            }
+        } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
@@ -63,13 +63,13 @@ public class concertsdb {
             BufferedReader reader = new BufferedReader(is);
             String line;
             while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",");
-                    String a="INSERT INTO Poblacions Values(" +
-                            Long.parseLong(parts[0])+",'" +
-                            parts[1] +"');";
-                    db.execSQL(a);
-                }
-            } catch (IOException e) {
+                String[] parts = line.split(",");
+                String a="INSERT INTO Poblacions Values(" +
+                        Long.parseLong(parts[0])+",'" +
+                        parts[1] +"');";
+                db.execSQL(a);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -81,13 +81,13 @@ public class concertsdb {
             BufferedReader reader = new BufferedReader(is);
             String line;
             while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",");
-                    String a="INSERT INTO GrupConcert Values(" +
-                            Long.parseLong(parts[0])+"," +
-                            Long.parseLong(parts[1]) +");";
-                    db.execSQL(a);
-                }
-            } catch (IOException e1) {
+                String[] parts = line.split(",");
+                String a="INSERT INTO GrupConcert Values(" +
+                        Long.parseLong(parts[0])+"," +
+                        Long.parseLong(parts[1]) +");";
+                db.execSQL(a);
+            }
+        } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
@@ -99,13 +99,13 @@ public class concertsdb {
             BufferedReader reader = new BufferedReader(is);
             String line;
             while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",");
-                    String a="INSERT INTO Grups Values(" +
-                            Long.parseLong(parts[0])+",'" +
-                            parts[1] +"');";
-                    db.execSQL(a);
-                }
-            } catch (IOException e1) {
+                String[] parts = line.split(",");
+                String a="INSERT INTO Grups Values(" +
+                        Long.parseLong(parts[0])+",'" +
+                        parts[1] +"');";
+                db.execSQL(a);
+            }
+        } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
@@ -147,25 +147,6 @@ public class concertsdb {
                         "Nom TEXT NOT NULL"+
                         ")";
 
-
-        private static final String SQL_INSERT_CONCERTS =
-                "INSERT INTO Concerts Values(1, 'Hola', '2017-01-01 22:00', 'aqui', 'C/aquest', 1, 1.5, 'blabla')";
-
-        private static final String SQL_INSERT_POBLACIONS=
-                "INSERT INTO Poblacions Values(1,'POBLE')";
-
-        private static final String SQL_INSERT_GRUPCONCERT=
-                "INSERT INTO GrupConcert Values(1,1)";
-
-        private static final String SQL_INSERT_GRUPS=
-                "INSERT INTO Grups Values(1,'grup')";
-
-        private static final String SQL_INSERT_GRUPCONCERT2=
-                "INSERT INTO GrupConcert Values(1,2)";
-
-        private static final String SQL_INSERT_GRUPS2=
-                "INSERT INTO Grups Values(2,'grup2')";
-
         public concertsDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -176,12 +157,6 @@ public class concertsdb {
             db.execSQL(SQL_CREATE_TAULA_CONCERTS);
             db.execSQL(SQL_CREATE_TAULA_GRUPS);
             db.execSQL(SQL_CREATE_TAULA_GRUPCONCERT);
-            //db.execSQL(SQL_INSERT_CONCERTS);
-            //db.execSQL(SQL_INSERT_POBLACIONS);
-            //db.execSQL(SQL_INSERT_GRUPS);
-            //db.execSQL(SQL_INSERT_GRUPS2);
-            //db.execSQL(SQL_INSERT_GRUPCONCERT);
-            //db.execSQL(SQL_INSERT_GRUPCONCERT2);
             readPoblacionsList(db);
             readConcertsList(db);
             readGrupsList(db);
@@ -232,9 +207,6 @@ public class concertsdb {
                 }
                 Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-                //!!!!!
-                //Assignar aqui nom imatge!!!!
-                //!!!!!!!
                 Bitmap img = null;
 
                 try{
