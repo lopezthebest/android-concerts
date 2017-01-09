@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -209,12 +210,13 @@ public class concertsdb {
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
                 Bitmap img = null;
 
+                File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
                 try{
-                    FileInputStream fileInputStream =
-                            new FileInputStream(context.getFilesDir().getPath()+ "a"+id+".jpg");
+                    FileInputStream fileInputStream = new FileInputStream(file);
                     img = BitmapFactory.decodeStream(fileInputStream);
+                    Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
                 }catch (IOException io){
-                    io.printStackTrace();
+                    Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
                 resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
             }
