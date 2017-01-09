@@ -185,12 +185,12 @@ public class concertsdb {
             while (c.moveToNext()) {
                 long id = c.getLong(c.getColumnIndexOrThrow("id"));
                 String nom = c.getString(c.getColumnIndexOrThrow("Nom"));
-                String select="SELECT Grups.Nom FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id;
+                String select="SELECT Grups.Nom as nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id;
                 Cursor a=db.rawQuery(select, null);
                 ArrayList<String> grups=new ArrayList<>();
                 if (a != null && a.getCount() > 0) {
                     while (a.moveToNext()) {
-                        String grup = a.getString(a.getColumnIndexOrThrow("Grups.Nom"));
+                        String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
                         grups.add(grup);
                     }
                 }
