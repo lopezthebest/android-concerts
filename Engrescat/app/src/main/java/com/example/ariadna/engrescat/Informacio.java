@@ -45,6 +45,8 @@ public class Informacio extends AppCompatActivity {
         hora.setText(con.getDataHora());
         TextView preu = (TextView)findViewById(R.id.preu);
         preu.setText(con.getPreu()+"€");
+        TextView lloc = (TextView)findViewById(R.id.lloc);
+        lloc.setText(con.getLloc());
         TextView adreca = (TextView)findViewById(R.id.adreca);
         adreca.setText(con.getAdr());
         TextView descripcio = (TextView)findViewById(R.id.descripcio);
@@ -55,7 +57,7 @@ public class Informacio extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 con.getGrups() );
 
-        llg=(ListView)findViewById(R.id.llg);
+        llg=(ListView)findViewById(R.id.grups);
         llg.setAdapter(grupsAdapter);
     }
 }

@@ -11,86 +11,116 @@
     tools:context="com.example.ariadna.engrescat.Informacio">
 
 
-    <ImageView
-        android:id="@+id/imatge"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignTop="@+id/nom_concert"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="6dp"/>
+    <TextView
+        android:id="@+id/hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grups"
+        android:text="Compañía"
+        tools:text="Hora"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:paddingLeft="@dimen/activity_vertical_margin" />
+
+    <TextView
+        android:id="@+id/lloc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hora"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:text="lloc"
+        tools:text="Lloc"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingTop="16dp"/>
+
+    <TextView
+        android:id="@+id/adreca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lloc"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:text="Adreça"
+        tools:text="Adreça"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:paddingLeft="@dimen/activity_vertical_margin"/>
+
+    <TextView
+        android:id="@+id/preu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:text="Price"
+        tools:text="Preu"
+        android:layout_below="@+id/poblacio"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:paddingLeft="@dimen/activity_vertical_margin"/>
+
+    <TextView
+        android:id="@+id/descripcio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preu"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:text="Descripció"
+        tools:text="Descripció"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:paddingLeft="@dimen/activity_vertical_margin"/>
+
 
     <TextView
         android:id="@+id/nom_concert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="56dp"
-        android:text="Nombre"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Nom del concert" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/black"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:layout_toLeftOf="@+id/imatge"
+        android:layout_toStartOf="@+id/imatge"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/poblacio"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/nom_concert"
-        android:layout_below="@+id/nom_concert"
-        android:text="Lloc"
-        tools:text="Ciutat i/o sala" />
-
-    <TextView
-        android:id="@+id/adreca"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/poblacio"
-        android:layout_alignLeft="@+id/nom_concert"
-        android:text="Adreça"
-        tools:text="Adreça" />
-
-    <TextView
-        android:id="@+id/hora"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
         android:layout_below="@+id/adreca"
-        android:text="Compañía"
-        tools:text="Hora" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/activity_vertical_margin"/>
 
-    <TextView
-        android:id="@+id/descripcio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/hora"
-        android:text="Descripció"
-        tools:text="Descripció" />
-
-    <TextView
-        android:id="@+id/grups"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Grups que actuen:"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:layout_below="@+id/descripcio"
-        tools:text="Grups que actuen:" />
-
+    <ImageView
+        android:id="@+id/imatge"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginRight="17dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="17dp" />
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/llg"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/grups"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/preu"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="70dp"
-        android:text="Price"
-        tools:text="Preu"
-        android:layout_below="@+id/adreca"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/nom_concert"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/grups"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"/>
+
+
 
 </RelativeLayout>
