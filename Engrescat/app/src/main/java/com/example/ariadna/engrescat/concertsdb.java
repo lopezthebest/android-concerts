@@ -1,7 +1,9 @@
 package com.example.ariadna.engrescat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +19,9 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +31,8 @@ import android.widget.Toast;
  */
 
 public class concertsdb {
+
+    private static String CARPETA_PROPIA = "Engrescat";
 
     private static Context context;
 
@@ -172,13 +179,46 @@ public class concertsdb {
 
     private static concertsDbHelper helper;
 
+    private static boolean creaCarpeta() {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)){
+            Log.i("engrescat", "Els fitxers externs no estan disponibles");
+            return false;
+        }
+        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            Log.i("engrescat", "Els fitxers externs estan en mode lectura");
+            return false;
+        }
+
+        File folder = new File(Environment.getExternalStorageDirectory(), CARPETA_PROPIA);
+        int result = 0;
+        if (folder.exists()) {
+            Log.d("engrescat","La carpeta 'Engrescat' ja existeix");
+            return true;
+        } else {
+            try {
+                if (folder.mkdir()) {
+                    Log.d("myAppName", "Creat la carpeta 'Engrescat'");
+                    return true;
+                } else {
+                    Log.e("engrescat", "No he pogut crear la carpeta 'Engrescat'");
+                }
+            } catch (Exception e) {
+                Log.e("engrescat", "No he pogut crear la carpeta: " + e.getMessage().toString());
+            }
+        }
+        return false;
+    }
+
     public static ArrayList<Concert> loadConcerts(){
         ArrayList<Concert> resultat= new ArrayList<>();
         if (helper == null) {
             helper = new concertsDbHelper(context);
         }
 
-        SQLiteDatabase db =helper.getReadableDatabase();
+        creaCarpeta();
+
+        SQLiteDatabase db = helper.getReadableDatabase();
 
         Cursor c = db.query("Concerts", null, null, null, null, null, null);
         if (c != null && c.getCount() > 0) {
@@ -210,12 +250,13 @@ public class concertsdb {
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
                 Bitmap img = null;
 
-                File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
+                // Llegim una imatge
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".jpg");
                 try{
                     FileInputStream fileInputStream = new FileInputStream(file);
                     img = BitmapFactory.decodeStream(fileInputStream);
                     Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
-                }catch (IOException io){
+                } catch (IOException io){
                     Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
                 resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
