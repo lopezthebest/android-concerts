@@ -1,7 +1,9 @@
 package com.example.ariadna.engrescat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +14,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.File;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,9 +32,12 @@ import android.widget.Toast;
 
 public class concertsdb {
 
+    private static String CARPETA_PROPIA = "Engrescat";
+
     private static Context context;
 
     public static void setContext(Context context) {
+
         concertsdb.context = context;
     }
 
@@ -171,11 +180,44 @@ public class concertsdb {
 
     private static concertsDbHelper helper;
 
+    private static boolean creaCarpeta() {
+        String state = Environment.getExternalStorageState();
+        if (!Environment.MEDIA_MOUNTED.equals(state)){
+            Log.i("engrescat", "Els fitxers externs no estan disponibles");
+            return false;
+        }
+        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            Log.i("engrescat", "Els fitxers externs estan en mode lectura");
+            return false;
+        }
+
+        File folder = new File(Environment.getExternalStorageDirectory(), CARPETA_PROPIA);
+        int result = 0;
+        if (folder.exists()) {
+            Log.d("engrescat","La carpeta 'Engrescat' ja existeix");
+            return true;
+        } else {
+            try {
+                if (folder.mkdir()) {
+                    Log.d("myAppName", "Creat la carpeta 'Engrescat'");
+                    return true;
+                } else {
+                    Log.e("engrescat", "No he pogut crear la carpeta 'Engrescat'");
+                }
+            } catch (Exception e) {
+                Log.e("engrescat", "No he pogut crear la carpeta: " + e.getMessage().toString());
+            }
+        }
+        return false;
+    }
+
     public static ArrayList<Concert> loadConcerts(){
         ArrayList<Concert> resultat= new ArrayList<>();
         if (helper == null) {
             helper = new concertsDbHelper(context);
         }
+
+        creaCarpeta();
 
         SQLiteDatabase db =helper.getReadableDatabase();
 
@@ -184,12 +226,12 @@ public class concertsdb {
             while (c.moveToNext()) {
                 long id = c.getLong(c.getColumnIndexOrThrow("id"));
                 String nom = c.getString(c.getColumnIndexOrThrow("Nom"));
-                String select="SELECT Grups.Nom FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id;
+                String select="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id;
                 Cursor a=db.rawQuery(select, null);
                 ArrayList<String> grups=new ArrayList<>();
                 if (a != null && a.getCount() > 0) {
                     while (a.moveToNext()) {
-                        String grup = a.getString(a.getColumnIndexOrThrow("Grups.Nom"));
+                        String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
                         grups.add(grup);
                     }
                 }
@@ -209,15 +251,71 @@ public class concertsdb {
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
                 Bitmap img = null;
 
+                // Llegim una imatge
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".jpg");
                 try{
-                    FileInputStream fileInputStream =
-                            new FileInputStream(context.getFilesDir().getPath()+ "a"+id+".jpg");
+                    FileInputStream fileInputStream = new FileInputStream(file);
                     img = BitmapFactory.decodeStream(fileInputStream);
+                    Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
                 }catch (IOException io){
-                    io.printStackTrace();
+                    Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
                 resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
             }
+        }
+        if (c != null) {
+            c.close();
+        }
+        db.close();
+        return resultat;
+    }
+
+    public static Concert loadInfo(int id){
+
+        if (helper == null) {
+            helper = new concertsDbHelper(context);
+        }
+
+        SQLiteDatabase db =helper.getReadableDatabase();
+
+        Cursor c = db.query("Concerts", new String[]{"column2"},  "column1 =?", new String[]{Integer.toString(id)}, null, null, "1");
+        if (c != null && c.getCount() > 0) {
+            long id2 = c.getLong(c.getColumnIndexOrThrow("id"));
+            String nom = c.getString(c.getColumnIndexOrThrow("Nom"));
+            String select="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id2;
+            Cursor a=db.rawQuery(select, null);
+            ArrayList<String> grups=new ArrayList<>();
+            if (a != null && a.getCount() > 0) {
+                while (a.moveToNext()) {
+                    String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
+                    grups.add(grup);
+                }
+            }
+            String datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
+            String lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
+            String adr =c.getString(c.getColumnIndexOrThrow("Adr"));
+            Long p=c.getLong(c.getColumnIndexOrThrow("Pobl"));
+            String select2="SELECT Nom FROM Poblacions WHERE id="+p;
+            Cursor b=db.rawQuery(select2, null);
+            String pobl= "";
+            if (b != null && b.getCount() > 0) {
+                while (b.moveToNext()) {
+                    pobl = b.getString(b.getColumnIndexOrThrow("Nom"));
+                }
+            }
+            Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
+            String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
+            Bitmap img = null;
+
+            File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
+            try{
+                FileInputStream fileInputStream = new FileInputStream(file);
+                img = BitmapFactory.decodeStream(fileInputStream);
+                Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
+            }catch (IOException io){
+                Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
+            }
+            Concert resultat = new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
         }
         if (c != null) {
             c.close();

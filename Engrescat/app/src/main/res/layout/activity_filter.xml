@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:text="Filtrar per "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="17dp"
+        android:id="@+id/textView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+
+
+    <TextView
+        android:text="Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:id="@+id/datatxt"
+        android:textSize="20sp"
+        android:layout_below="@+id/textView"
+        android:layout_alignRight="@+id/gruptxt"
+        android:layout_alignEnd="@+id/gruptxt" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/datavalue"
+        android:layout_alignBaseline="@+id/datatxt"
+        android:layout_alignBottom="@+id/datatxt"
+        android:layout_alignLeft="@+id/poblevalue"
+        android:layout_alignStart="@+id/poblevalue" />
+
+    <TextView
+        android:text="Poblacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:id="@+id/pobletxt"
+        android:textSize="20sp"
+        android:layout_below="@+id/datavalue"
+        android:layout_alignLeft="@+id/gruptxt"
+        android:layout_alignStart="@+id/gruptxt" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/poblevalue"
+        android:layout_alignBaseline="@+id/pobletxt"
+        android:layout_alignBottom="@+id/pobletxt"
+        android:layout_alignLeft="@+id/grupvalue"
+        android:layout_alignStart="@+id/grupvalue" />
+
+    <TextView
+        android:text="Grup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:id="@+id/gruptxt"
+        android:textSize="20sp"
+        android:layout_below="@+id/poblevalue"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:id="@+id/grupvalue"
+        android:layout_alignBaseline="@+id/gruptxt"
+        android:layout_alignBottom="@+id/gruptxt"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView" />
+
+    <Button
+        android:text="Cerca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="74dp"
+        android:id="@+id/button"
+        android:layout_below="@+id/grupvalue"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

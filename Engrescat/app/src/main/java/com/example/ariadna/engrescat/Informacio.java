@@ -51,6 +51,8 @@ public class Informacio extends AppCompatActivity {
         adreca.setText(con.getAdr());
         TextView descripcio = (TextView)findViewById(R.id.descripcio);
         descripcio.setText(con.getDesc());
+        ImageView im=(ImageView)findViewById(R.id.imatge);
+        im.setImageBitmap(con.getImg());
 
         ArrayAdapter<String> grupsAdapter = new ArrayAdapter<String>(
                 this,

@@ -1,10 +1,14 @@
 package com.example.ariadna.engrescat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,6 +69,8 @@ public class Llista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_llista);
 
+        demanaPermisosCarpeta();
+
         concertsdb.setContext(this);
 
         adapter = new ConcertsAdapter();
@@ -86,6 +92,18 @@ public class Llista extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void demanaPermisosCarpeta() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1 // request code... ?
+            );
+        }
     }
 
 }
