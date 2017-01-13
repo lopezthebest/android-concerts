@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,6 +35,10 @@ public class concertsdb {
     private static String CARPETA_PROPIA = "Engrescat";
 
     private static Context context;
+
+    private static ArrayList<Concert> resultat= new ArrayList<>();
+
+    private static ArrayList<Concert> filtrat= new ArrayList<>();
 
     public static void setContext(Context context) {
 
@@ -213,14 +216,13 @@ public class concertsdb {
     }
 
     public static ArrayList<Concert> loadConcerts(){
-        ArrayList<Concert> resultat= new ArrayList<>();
         if (helper == null) {
             helper = new concertsDbHelper(context);
         }
 
         creaCarpeta();
 
-        SQLiteDatabase db = helper.getReadableDatabase();
+        SQLiteDatabase db =helper.getReadableDatabase();
 
         Cursor c = db.query("Concerts", null, null, null, null, null, null);
         if (c != null && c.getCount() > 0) {
@@ -258,7 +260,7 @@ public class concertsdb {
                     FileInputStream fileInputStream = new FileInputStream(file);
                     img = BitmapFactory.decodeStream(fileInputStream);
                     Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
-                } catch (IOException io){
+                }catch (IOException io){
                     Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
                 resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
@@ -271,133 +273,102 @@ public class concertsdb {
         return resultat;
     }
 
-    public static Concert loadInfo(int id){
+    public static Concert loadInfo(int pos){
 
+        Concert con= resultat.get(pos);
+        return con;
+    }
+
+    public static ArrayList<Concert> LoadFiltre (String pobl, String data, String grup){
         if (helper == null) {
             helper = new concertsDbHelper(context);
         }
 
-        SQLiteDatabase db =helper.getReadableDatabase();
-        long id2 = 0;
-        String nom = "";
-        ArrayList<String> grups=new ArrayList<>();
-        String datahora ="";
-        String lloc ="";
-        String adr="";
-        String pobl= "";
-        Float preu = Float.valueOf(0);
-        String desc  = "";
-        Bitmap img = null;
-        Concert resultat= new Concert(id2, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
-        Cursor c = db.query("Concerts", null,  "id ="+id, null, null, null, null);
-        if (c != null && c.getCount() > 0) {
-            id2 = c.getLong(c.getColumnIndexOrThrow("id"));
-            nom = c.getString(c.getColumnIndexOrThrow("Nom"));
-            String select="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id2;
-            Cursor a=db.rawQuery(select, null);
-            grups=new ArrayList<>();
-            if (a != null && a.getCount() > 0) {
-                while (a.moveToNext()) {
-                    String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
-                    grups.add(grup);
-                }
-            }
-            datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
-            lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
-            adr =c.getString(c.getColumnIndexOrThrow("Adr"));
-            Long p=c.getLong(c.getColumnIndexOrThrow("Pobl"));
-            String select2="SELECT Nom FROM Poblacions WHERE id="+p;
-            Cursor b=db.rawQuery(select2, null);
-            pobl= "";
-            if (b != null && b.getCount() > 0) {
-                while (b.moveToNext()) {
-                    pobl = b.getString(b.getColumnIndexOrThrow("Nom"));
-                }
-            }
-            preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
-            desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-            img = null;
 
-            File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
-            try{
-                FileInputStream fileInputStream = new FileInputStream(file);
-                img = BitmapFactory.decodeStream(fileInputStream);
-                Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
-            }catch (IOException io){
-                Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
+        SQLiteDatabase db =helper.getReadableDatabase();
+        Long idp;
+        Long idg;
+        String select= "SELECT * FROM Concerts";
+        filtrat.clear();
+        if (grup!=""){
+            String s1 = "SELECT id FROM Grups WHERE Nom = " + grup;
+            Cursor c1 = db.rawQuery(s1, null);
+            if (c1 != null && c1.getCount() > 0) {
+                while (c1.moveToNext()) {
+                    idg = c1.getLong(c1.getColumnIndexOrThrow("id"));
+                    select = select+ " INNER JOIN GrupConcertON Concerts.id=GrupConcert.Concert WHERE GrupConcert.Grup="+idg;
+                }
             }
-            resultat = new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
+        }
+        if (pobl!="") {
+            String s1 = "SELECT id FROM Poblacions WHERE Nom = " + pobl;
+            Cursor c1 = db.rawQuery(s1, null);
+            if (c1 != null && c1.getCount() > 0) {
+                while (c1.moveToNext()) {
+                    idp = c1.getLong(c1.getColumnIndexOrThrow("id"));
+                    if (grup=="") select = select+" WHERE Pobl="+idp;
+                    else select=select+" AND Pobl="+idp;
+                }
+            }
+        }
+        if (data!="") {
+            String datai = data + " 00:00";
+            String dataf = data + " 23:59";
+            if (grup=="" && pobl=="") select = select+" WHERE DataHora>="+datai+" AND DataHora<="+dataf;
+            else select=select+" AND DataHora>="+datai+" AND DataHora<="+dataf;
+        }
+
+        Cursor c = db.rawQuery(select, null);
+        if (c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                long id = c.getLong(c.getColumnIndexOrThrow("id"));
+                String nom = c.getString(c.getColumnIndexOrThrow("Nom"));
+                String select2="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id;
+                Cursor a=db.rawQuery(select2, null);
+                ArrayList<String> grups=new ArrayList<>();
+                if (a != null && a.getCount() > 0) {
+                    while (a.moveToNext()) {
+                        String gr = a.getString(a.getColumnIndexOrThrow("nomgrup"));
+                        grups.add(gr);
+                    }
+                }
+                String datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
+                String lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
+                String adr =c.getString(c.getColumnIndexOrThrow("Adr"));
+                Long p=c.getLong(c.getColumnIndexOrThrow("Pobl"));
+                String select3="SELECT Nom FROM Poblacions WHERE id="+p;
+                Cursor b=db.rawQuery(select3, null);
+                String poble= "";
+                if (b != null && b.getCount() > 0) {
+                    while (b.moveToNext()) {
+                        poble = b.getString(b.getColumnIndexOrThrow("Nom"));
+                    }
+                }
+                Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
+                String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
+                Bitmap img = null;
+
+                // Llegim una imatge
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".jpg");
+                try{
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    img = BitmapFactory.decodeStream(fileInputStream);
+                    Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
+                }catch (IOException io){
+                    Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
+                }
+                filtrat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
+            }
         }
         if (c != null) {
             c.close();
         }
-        db.close();
-        return resultat;
+
+
+        return filtrat;
     }
 
-    public static Concert loadFiltre(String pob, String Data, String grup){
 
-        if (helper == null) {
-            helper = new concertsDbHelper(context);
-        }
-
-        SQLiteDatabase db =helper.getReadableDatabase();
-        long id2 = 0;
-        String nom = "";
-        ArrayList<String> grups=new ArrayList<>();
-        String datahora ="";
-        String lloc ="";
-        String adr="";
-        String pobl= "";
-        Float preu = Float.valueOf(0);
-        String desc  = "";
-        Bitmap img = null;
-        Concert resultat= new Concert(id2, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
-        Cursor c = db.query("Concerts", null,  "id ="+id, null, null, null, null);
-        if (c != null && c.getCount() > 0) {
-            id2 = c.getLong(c.getColumnIndexOrThrow("id"));
-            nom = c.getString(c.getColumnIndexOrThrow("Nom"));
-            String select="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id2;
-            Cursor a=db.rawQuery(select, null);
-            grups=new ArrayList<>();
-            if (a != null && a.getCount() > 0) {
-                while (a.moveToNext()) {
-                    String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
-                    grups.add(grup);
-                }
-            }
-            datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
-            lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
-            adr =c.getString(c.getColumnIndexOrThrow("Adr"));
-            Long p=c.getLong(c.getColumnIndexOrThrow("Pobl"));
-            String select2="SELECT Nom FROM Poblacions WHERE id="+p;
-            Cursor b=db.rawQuery(select2, null);
-            pobl= "";
-            if (b != null && b.getCount() > 0) {
-                while (b.moveToNext()) {
-                    pobl = b.getString(b.getColumnIndexOrThrow("Nom"));
-                }
-            }
-            preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
-            desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-            img = null;
-
-            File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
-            try{
-                FileInputStream fileInputStream = new FileInputStream(file);
-                img = BitmapFactory.decodeStream(fileInputStream);
-                Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
-            }catch (IOException io){
-                Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
-            }
-            resultat = new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
-        }
-        if (c != null) {
-            c.close();
-        }
-        db.close();
-        return resultat;
-    }
 
 
 }

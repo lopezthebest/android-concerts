@@ -33,7 +33,7 @@ public class Llista extends AppCompatActivity {
     public class ConcertsAdapter extends ArrayAdapter<Concert> {
         ConcertsAdapter() {
             super(Llista.this, R.layout.item_concert,
-                    concertsdb.loadConcerts());
+                   concertsdb.loadConcerts());
         }
 
         @Override
@@ -62,6 +62,8 @@ public class Llista extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,7 @@ public class Llista extends AppCompatActivity {
 
         concerts= new ArrayList<>();
 
-        concerts=concertsdb.loadConcerts();
+        //concerts=concertsdb.loadConcerts();
 
         llc=(ListView)findViewById(R.id.llc);
         llc.setAdapter(adapter);
@@ -95,7 +97,7 @@ public class Llista extends AppCompatActivity {
 
     private void demanaPermisosCarpeta() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-            PackageManager.PERMISSION_GRANTED)
+                PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(
                     this,
