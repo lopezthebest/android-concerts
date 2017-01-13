@@ -88,6 +88,7 @@ public class Llista extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 Intent intent = new Intent(getApplicationContext(), Informacio.class);
                 //intent.putExtra("EXTRA_IDCONCERT", adapter.getItem(position).getId());
+
                 intent.putExtra("EXTRA_IDCONCERT", (int)arg3);
                 startActivity(intent);
             }

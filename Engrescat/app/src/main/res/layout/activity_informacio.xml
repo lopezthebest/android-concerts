@@ -105,6 +105,7 @@
         android:id="@+id/imatge"
         android:layout_width="100dp"
         android:layout_height="120dp"
+
         android:layout_marginRight="17dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"

@@ -277,35 +277,45 @@ public class concertsdb {
         }
 
         SQLiteDatabase db =helper.getReadableDatabase();
-
-        Cursor c = db.query("Concerts", new String[]{"column2"},  "column1 =?", new String[]{Integer.toString(id)}, null, null, "1");
+        long id2 = 0;
+        String nom = "";
+        ArrayList<String> grups=new ArrayList<>();
+        String datahora ="";
+        String lloc ="";
+        String adr="";
+        String pobl= "";
+        Float preu = Float.valueOf(0);
+        String desc  = "";
+        Bitmap img = null;
+        Concert resultat= new Concert(id2, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
+        Cursor c = db.query("Concerts", null,  "id ="+id, null, null, null, null);
         if (c != null && c.getCount() > 0) {
-            long id2 = c.getLong(c.getColumnIndexOrThrow("id"));
-            String nom = c.getString(c.getColumnIndexOrThrow("Nom"));
+            id2 = c.getLong(c.getColumnIndexOrThrow("id"));
+            nom = c.getString(c.getColumnIndexOrThrow("Nom"));
             String select="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id2;
             Cursor a=db.rawQuery(select, null);
-            ArrayList<String> grups=new ArrayList<>();
+            grups=new ArrayList<>();
             if (a != null && a.getCount() > 0) {
                 while (a.moveToNext()) {
                     String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
                     grups.add(grup);
                 }
             }
-            String datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
-            String lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
-            String adr =c.getString(c.getColumnIndexOrThrow("Adr"));
+            datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
+            lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
+            adr =c.getString(c.getColumnIndexOrThrow("Adr"));
             Long p=c.getLong(c.getColumnIndexOrThrow("Pobl"));
             String select2="SELECT Nom FROM Poblacions WHERE id="+p;
             Cursor b=db.rawQuery(select2, null);
-            String pobl= "";
+            pobl= "";
             if (b != null && b.getCount() > 0) {
                 while (b.moveToNext()) {
                     pobl = b.getString(b.getColumnIndexOrThrow("Nom"));
                 }
             }
-            Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
-            String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-            Bitmap img = null;
+            preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
+            desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
+            img = null;
 
             File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
             try{
@@ -315,7 +325,71 @@ public class concertsdb {
             }catch (IOException io){
                 Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
             }
-            Concert resultat = new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
+            resultat = new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
+        }
+        if (c != null) {
+            c.close();
+        }
+        db.close();
+        return resultat;
+    }
+
+    public static Concert loadFiltre(String pob, String Data, String grup){
+
+        if (helper == null) {
+            helper = new concertsDbHelper(context);
+        }
+
+        SQLiteDatabase db =helper.getReadableDatabase();
+        long id2 = 0;
+        String nom = "";
+        ArrayList<String> grups=new ArrayList<>();
+        String datahora ="";
+        String lloc ="";
+        String adr="";
+        String pobl= "";
+        Float preu = Float.valueOf(0);
+        String desc  = "";
+        Bitmap img = null;
+        Concert resultat= new Concert(id2, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
+        Cursor c = db.query("Concerts", null,  "id ="+id, null, null, null, null);
+        if (c != null && c.getCount() > 0) {
+            id2 = c.getLong(c.getColumnIndexOrThrow("id"));
+            nom = c.getString(c.getColumnIndexOrThrow("Nom"));
+            String select="SELECT Grups.Nom AS nomgrup FROM Grups INNER JOIN GrupConcert ON Grups.id=GrupConcert.grup WHERE GrupConcert.concert="+id2;
+            Cursor a=db.rawQuery(select, null);
+            grups=new ArrayList<>();
+            if (a != null && a.getCount() > 0) {
+                while (a.moveToNext()) {
+                    String grup = a.getString(a.getColumnIndexOrThrow("nomgrup"));
+                    grups.add(grup);
+                }
+            }
+            datahora =c.getString(c.getColumnIndexOrThrow("DataHora"));
+            lloc =c.getString(c.getColumnIndexOrThrow("Lloc"));
+            adr =c.getString(c.getColumnIndexOrThrow("Adr"));
+            Long p=c.getLong(c.getColumnIndexOrThrow("Pobl"));
+            String select2="SELECT Nom FROM Poblacions WHERE id="+p;
+            Cursor b=db.rawQuery(select2, null);
+            pobl= "";
+            if (b != null && b.getCount() > 0) {
+                while (b.moveToNext()) {
+                    pobl = b.getString(b.getColumnIndexOrThrow("Nom"));
+                }
+            }
+            preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
+            desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
+            img = null;
+
+            File file = new File(context.getExternalFilesDir(null), "concert-" + id + ".jpg");
+            try{
+                FileInputStream fileInputStream = new FileInputStream(file);
+                img = BitmapFactory.decodeStream(fileInputStream);
+                Log.i("imatges", "He llegit: " + file.getAbsolutePath().toString());
+            }catch (IOException io){
+                Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
+            }
+            resultat = new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc);
         }
         if (c != null) {
             c.close();

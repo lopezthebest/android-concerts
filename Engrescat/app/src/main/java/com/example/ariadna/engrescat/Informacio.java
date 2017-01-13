@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -33,9 +34,7 @@ public class Informacio extends AppCompatActivity {
 
         concerts= new ArrayList<>();
 
-        concerts=concertsdb.loadConcerts();
-
-        Concert con = concerts.get(_IdConcert);
+        Concert con=concertsdb.loadInfo(_IdConcert);
 
         TextView nom = (TextView)findViewById(R.id.nom_concert);
         nom.setText(con.getNom());
