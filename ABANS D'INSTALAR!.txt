@@ -1,0 +1,2 @@
+Abans d'instalar l'aplicació s'ha de guardar la carpeta Engrescat
+que hi ha dins de la carpeta imatges al telefon, al directòri ''/storage/emulated/0'.

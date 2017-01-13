@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -33,9 +34,7 @@ public class Informacio extends AppCompatActivity {
 
         concerts= new ArrayList<>();
 
-        concerts=concertsdb.loadConcerts();
-
-        Concert con = concerts.get(_IdConcert);
+        Concert con=concertsdb.loadInfo(_IdConcert);
 
         TextView nom = (TextView)findViewById(R.id.nom_concert);
         nom.setText(con.getNom());
@@ -45,17 +44,21 @@ public class Informacio extends AppCompatActivity {
         hora.setText(con.getDataHora());
         TextView preu = (TextView)findViewById(R.id.preu);
         preu.setText(con.getPreu()+"€");
+        TextView lloc = (TextView)findViewById(R.id.lloc);
+        lloc.setText(con.getLloc());
         TextView adreca = (TextView)findViewById(R.id.adreca);
         adreca.setText(con.getAdr());
         TextView descripcio = (TextView)findViewById(R.id.descripcio);
         descripcio.setText(con.getDesc());
+        ImageView im=(ImageView)findViewById(R.id.imatge);
+        im.setImageBitmap(con.getImg());
 
         ArrayAdapter<String> grupsAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 con.getGrups() );
 
-        llg=(ListView)findViewById(R.id.llg);
+        llg=(ListView)findViewById(R.id.grups);
         llg.setAdapter(grupsAdapter);
     }
 }
