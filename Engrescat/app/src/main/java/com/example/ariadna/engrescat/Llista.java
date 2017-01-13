@@ -62,8 +62,6 @@ public class Llista extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +95,7 @@ public class Llista extends AppCompatActivity {
 
     private void demanaPermisosCarpeta() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                PackageManager.PERMISSION_GRANTED)
+            PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(
                     this,
