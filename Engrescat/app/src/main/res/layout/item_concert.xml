@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="8dp">
+
+    <ImageView
+        android:id="@+id/imatge"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/nom_concert"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="6dp"/>
+
+    <TextView
+        android:id="@+id/nom_concert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="56dp"
+        android:text="Nombre"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="Nom del concert" />
+
+    <TextView
+        android:id="@+id/poblacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:layout_below="@+id/nom_concert"
+        android:text="Lloc"
+        tools:text="Ciutat i/o sala" />
+
+
+    <TextView
+        android:id="@+id/hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/poblacio"
+        android:text="Compañía"
+        tools:text="Hora" />
+
+    <TextView
+        android:id="@+id/preu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="70dp"
+        android:layout_alignLeft="@+id/nom_concert"
+        android:layout_below="@+id/poblacio"
+        android:text="Price"
+        tools:text="Preu" />
+</RelativeLayout>
