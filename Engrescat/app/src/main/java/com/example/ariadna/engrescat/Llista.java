@@ -28,6 +28,10 @@ public class Llista extends AppCompatActivity {
     private ArrayList<Concert>concerts;
     private ListView llc;
     private ConcertsAdapter adapter;
+    private ConcertsFilterAdapter fadapter;
+    private String poble;
+    private String data;
+    private String grup;
 
 
     public class ConcertsAdapter extends ArrayAdapter<Concert> {
@@ -62,6 +66,37 @@ public class Llista extends AppCompatActivity {
         }
     }
 
+    public class ConcertsFilterAdapter extends ArrayAdapter<Concert> {
+        ConcertsFilterAdapter() {
+            super(Llista.this, R.layout.item_concert,
+                    concertsdb.LoadFiltre(poble, data, grup));
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View result = convertView;
+            if (result == null) {
+                LayoutInflater inflater = getLayoutInflater();
+                result = inflater.inflate(R.layout.item_concert, parent, false);
+            }
+
+            // Referencias UI.
+
+            Concert con =getItem(position);
+            ImageView im=(ImageView)result.findViewById(R.id.imatge);
+            im.setImageBitmap(con.getImg());
+            TextView nom = (TextView) result.findViewById(R.id.nom_concert);
+            nom.setText(con.getNom());
+            TextView poble = (TextView)result.findViewById(R.id.poblacio);
+            poble.setText(con.getPobl());
+            TextView hora = (TextView) result.findViewById(R.id.hora);
+            hora.setText(con.getDataHora());
+            TextView preu = (TextView) result.findViewById(R.id.preu);
+            preu.setText(con.getPreu()+"€");
+
+            return result;
+        }
+    }
 
 
     @Override
@@ -73,26 +108,48 @@ public class Llista extends AppCompatActivity {
 
         concertsdb.setContext(this);
 
-        adapter = new ConcertsAdapter();
+        boolean isFilter = getIntent().getBooleanExtra("isFilter", false);
+        if (isFilter) {
+
+            poble = getIntent().getStringExtra("EXTRA_POBLE");
+            data = getIntent().getStringExtra("EXTRA_DATA");
+            grup = getIntent().getStringExtra("EXTRA_GRUP");
+
+            fadapter = new ConcertsFilterAdapter();
+        }
+
+        else{
+            adapter = new ConcertsAdapter();
+        }
 
         concerts= new ArrayList<>();
 
         //concerts=concertsdb.loadConcerts();
 
         llc=(ListView)findViewById(R.id.llc);
-        llc.setAdapter(adapter);
+        if (isFilter) {
+            llc.setAdapter(fadapter);
+        }
+        else{
+
+            llc.setAdapter(adapter);
+        }
 
         llc.setClickable(true);
         llc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 Intent intent = new Intent(getApplicationContext(), Informacio.class);
-                //intent.putExtra("EXTRA_IDCONCERT", adapter.getItem(position).getId());
 
                 intent.putExtra("EXTRA_IDCONCERT", (int)arg3);
                 startActivity(intent);
             }
         });
+    }
+
+    public void filtra(View view){
+        Intent intent = new Intent(this,activity_filtre.class);
+        startActivity(intent);
     }
 
     private void demanaPermisosCarpeta() {

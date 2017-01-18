@@ -290,34 +290,35 @@ public class concertsdb {
         Long idg;
         String select= "SELECT * FROM Concerts";
         filtrat.clear();
-        if (grup!=""){
-            String s1 = "SELECT id FROM Grups WHERE Nom = " + grup;
+        if (!grup.equals("")){
+            String s1 = "SELECT id FROM Grups WHERE Nom = '" + grup+"'";
             Cursor c1 = db.rawQuery(s1, null);
             if (c1 != null && c1.getCount() > 0) {
                 while (c1.moveToNext()) {
                     idg = c1.getLong(c1.getColumnIndexOrThrow("id"));
-                    select = select+ " INNER JOIN GrupConcertON Concerts.id=GrupConcert.Concert WHERE GrupConcert.Grup="+idg;
+                    select = select+ " INNER JOIN GrupConcert ON Concerts.id=GrupConcert.Concert WHERE GrupConcert.Grup="+idg;
                 }
             }
         }
-        if (pobl!="") {
-            String s1 = "SELECT id FROM Poblacions WHERE Nom = " + pobl;
+        if (!pobl.equals("")) {
+            String s1 = "SELECT id FROM Poblacions WHERE Nom = '" + pobl+"'";
             Cursor c1 = db.rawQuery(s1, null);
             if (c1 != null && c1.getCount() > 0) {
                 while (c1.moveToNext()) {
                     idp = c1.getLong(c1.getColumnIndexOrThrow("id"));
-                    if (grup=="") select = select+" WHERE Pobl="+idp;
+                    if (grup.equals("")) select = select+" WHERE Pobl="+idp;
                     else select=select+" AND Pobl="+idp;
                 }
             }
         }
-        if (data!="") {
-            String datai = data + " 00:00";
-            String dataf = data + " 23:59";
-            if (grup=="" && pobl=="") select = select+" WHERE DataHora>="+datai+" AND DataHora<="+dataf;
+        if (!data.equals("")) {
+            String datai = "'"+data + " 00:00'";
+            String dataf = "'"+data + " 23:59'";
+            if (grup.equals("") && pobl.equals("")) select = select+" WHERE DataHora>="+datai+" AND DataHora<="+dataf;
             else select=select+" AND DataHora>="+datai+" AND DataHora<="+dataf;
         }
 
+        Log.i("select", select);
         Cursor c = db.rawQuery(select, null);
         if (c != null && c.getCount() > 0) {
             while (c.moveToNext()) {
