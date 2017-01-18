@@ -1,7 +1,9 @@
 package com.example.ariadna.engrescat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +29,14 @@ public class activity_filtre extends AppCompatActivity {
                 String data = datavalue.getText().toString();
                 String grup = grupvalue.getText().toString();
 
-                ArrayList<Concert> filtrat = concertsdb.LoadFiltre(poble, data, grup);
+                //ArrayList<Concert> filtrat = concertsdb.LoadFiltre(poble, data, grup);
 
+                Intent intent = new Intent(getApplicationContext(), Llista.class);
+                intent.putExtra("isFilter", true);
+                intent.putExtra("EXTRA_POBLE", poble);
+                intent.putExtra("EXTRA_DATA", data);
+                intent.putExtra("EXTRA_GRUP", grup);
+                startActivity(intent);
             }
         });
     }

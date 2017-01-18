@@ -61,7 +61,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="date"
+        android:inputType="text"
         android:ems="10"
         android:id="@+id/poblevalue"
         android:layout_alignBaseline="@+id/pobletxt"
@@ -83,7 +83,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="date"
+        android:inputType="text"
         android:ems="10"
         android:layout_marginLeft="18dp"
         android:layout_marginStart="18dp"
