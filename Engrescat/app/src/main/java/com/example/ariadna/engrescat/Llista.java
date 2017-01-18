@@ -152,6 +152,11 @@ public class Llista extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void obrefiltre(View view){
+        Intent intent = new Intent(this,activity_filtre.class);
+        startActivity(intent);
+    }
+
     private void demanaPermisosCarpeta() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED)
