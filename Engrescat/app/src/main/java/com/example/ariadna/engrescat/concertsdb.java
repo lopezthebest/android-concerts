@@ -279,6 +279,57 @@ public class concertsdb {
         return con;
     }
 
+    public static ArrayList<String> loadPoblacions(){
+        if (helper == null) {
+            helper = new concertsDbHelper(context);
+        }
+
+        SQLiteDatabase db =helper.getReadableDatabase();
+
+        String select="SELECT Nom FROM Poblacions ORDER BY Nom ASC";
+        Cursor a=db.rawQuery(select, null);
+
+        ArrayList<String> poblacions=new ArrayList<>();
+        if (a != null && a.getCount() > 0) {
+            while (a.moveToNext()) {
+                String poblacio = a.getString(a.getColumnIndexOrThrow("Nom"));
+                poblacions.add(poblacio);
+            }
+        }
+
+        if (a != null) {
+            a.close();
+        }
+        db.close();
+        return poblacions;
+    }
+
+
+    public static ArrayList<String> loadGrups(){
+        if (helper == null) {
+            helper = new concertsDbHelper(context);
+        }
+
+        SQLiteDatabase db =helper.getReadableDatabase();
+
+        String select="SELECT Nom FROM Grups ORDER BY Nom ASC";
+        Cursor a=db.rawQuery(select, null);
+
+        ArrayList<String> grups=new ArrayList<>();
+        if (a != null && a.getCount() > 0) {
+            while (a.moveToNext()) {
+                String grup = a.getString(a.getColumnIndexOrThrow("Nom"));
+                grups.add(grup);
+            }
+        }
+
+        if (a != null) {
+            a.close();
+        }
+        db.close();
+        return grups;
+    }
+
     public static ArrayList<Concert> LoadFiltre (String pobl, String data, String grup){
         if (helper == null) {
             helper = new concertsDbHelper(context);

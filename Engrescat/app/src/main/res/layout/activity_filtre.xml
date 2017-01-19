@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.ariadna.engrescat.activity_filtre">
+    tools:context="com.example.ariadna.engrescat.Filtre">
 
 
     <TextView
@@ -58,16 +58,16 @@
         android:layout_alignLeft="@+id/gruptxt"
         android:layout_alignStart="@+id/gruptxt" />
 
-    <EditText
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
         android:ems="10"
         android:id="@+id/poblevalue"
         android:layout_alignBaseline="@+id/pobletxt"
         android:layout_alignBottom="@+id/pobletxt"
         android:layout_alignLeft="@+id/grupvalue"
         android:layout_alignStart="@+id/grupvalue" />
+
 
     <TextView
         android:text="Grup"
@@ -80,13 +80,10 @@
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView" />
 
-    <EditText
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
+        android:ems="20"
         android:id="@+id/grupvalue"
         android:layout_alignBaseline="@+id/gruptxt"
         android:layout_alignBottom="@+id/gruptxt"
@@ -101,5 +98,7 @@
         android:id="@+id/btn_cerca"
         android:layout_below="@+id/grupvalue"
         android:layout_centerHorizontal="true" />
+
+
 
 </RelativeLayout>
