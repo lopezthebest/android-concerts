@@ -152,8 +152,8 @@ public class Llista extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void obrefiltre(View view){
-        Intent intent = new Intent(this,activity_filtre.class);
+    public void obremapa(View view){
+        Intent intent = new Intent(this,MapActivity.class);
         startActivity(intent);
     }
 
