@@ -21,8 +21,10 @@ public class Concert {
     private String Pobl;
     private Float  Preu;
     private String Desc;
+    private Float Lon;
+    private Float Lat;
 
-    public Concert(long id, Bitmap img, String nom, ArrayList<String> grups, String dataHora, String lloc, String adr,String pobl, Float preu, String desc) {
+    public Concert(long id, Bitmap img, String nom, ArrayList<String> grups, String dataHora, String lloc, String adr,String pobl, Float preu, String desc, Float lon, Float lat) {
         Id = id;
         Img=img;
         Nom = nom;
@@ -33,6 +35,8 @@ public class Concert {
         Pobl = pobl;
         Preu = preu;
         Desc = desc;
+        Lon = lon;
+        Lat = lat;
     }
 
     public long getId() {
@@ -111,6 +115,14 @@ public class Concert {
         Desc = desc;
     }
 
+    public Float getLon() { return Lon; }
+
+    public void setLon(Float lon) { Lon = lon; }
+
+    public Float getLat() { return Lat;}
+
+    public void setLat(Float lat) { Lat = lat; }
+
     @Override
     public String toString() {
         return Id +
@@ -121,6 +133,8 @@ public class Concert {
                 '\n' + Adr +
                 '\n' + Pobl +
                 '\n' + Preu +"€"+
-                '\n' + Desc+'\n';
+                '\n' + Desc+
+                '\n' + Lon+
+                '\n'+ Lat+ '\n';
     }
 }

@@ -64,7 +64,9 @@ public class concertsdb {
                         parts[4] +"'," +
                         Float.parseFloat(parts[5]) +",'" +
                         parts[6] +"','" +
-                        parts[7]+"');";
+                        parts[7]+"',"+
+                        parts[8]+","+
+                        parts[9]+");";
                 db.execSQL(a);
             }
         } catch (IOException e1) {
@@ -140,6 +142,8 @@ public class concertsdb {
                         "Pobl INTEGER NOT NULL,"+
                         "Preu REAL NOT NULL,"+
                         "Desc TEXT," +
+                        "Lon REAL NOT NULL,"+
+                        "Lat REAL NOT NULL,"+
                         "FOREIGN KEY (Pobl) REFERENCES Poblacions(id)"+
                         ")";
 
@@ -262,6 +266,8 @@ public class concertsdb {
                 }
                 Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
+                Float lon   = c.getFloat(c.getColumnIndexOrThrow("Lon"));
+                Float lat = c.getFloat(c.getColumnIndexOrThrow("Lat"));
                 Bitmap img = null;
 
                 // Llegim una imatge
@@ -273,7 +279,7 @@ public class concertsdb {
                 }catch (IOException io){
                     Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
-                resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
+                resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc, lon, lat));
             }
         }
         if (c != null) {
@@ -418,6 +424,8 @@ public class concertsdb {
                 }
                 Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
+                Float lon   = c.getFloat(c.getColumnIndexOrThrow("Lon"));
+                Float lat = c.getFloat(c.getColumnIndexOrThrow("Lat"));
                 Bitmap img = null;
 
                 // Llegim una imatge
@@ -429,7 +437,7 @@ public class concertsdb {
                 }catch (IOException io){
                     Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
-                filtrat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc));
+                filtrat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc, lon, lat));
             }
         }
         if (c != null) {
