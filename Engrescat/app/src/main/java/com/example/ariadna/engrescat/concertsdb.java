@@ -295,6 +295,12 @@ public class concertsdb {
         return con;
     }
 
+    public static Concert loadFInfo(int pos){
+
+        Concert con= filtrat.get(pos);
+        return con;
+    }
+
     public static ArrayList<String> loadPoblacions(){
         if (helper == null) {
             helper = new concertsDbHelper(context);

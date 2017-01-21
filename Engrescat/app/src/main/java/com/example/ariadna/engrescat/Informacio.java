@@ -28,13 +28,19 @@ public class Informacio extends AppCompatActivity {
         setContentView(R.layout.activity_informacio);
 
         _IdConcert = getIntent().getIntExtra("EXTRA_IDCONCERT", 0);
+        final boolean isFilter = getIntent().getBooleanExtra("isFilter", false);
 
         concertsdb.setContext(this);
 
 
-        concerts= new ArrayList<>();
+        Concert con;
+        if (isFilter){
+            con=concertsdb.loadFInfo(_IdConcert);
+        }
 
-        Concert con=concertsdb.loadInfo(_IdConcert);
+        else {
+            con = concertsdb.loadInfo(_IdConcert);
+        }
 
         TextView nom = (TextView)findViewById(R.id.nom_concert);
         nom.setText(con.getNom());

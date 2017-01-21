@@ -108,7 +108,7 @@ public class Llista extends AppCompatActivity {
 
         concertsdb.setContext(this);
 
-        boolean isFilter = getIntent().getBooleanExtra("isFilter", false);
+        final boolean isFilter = getIntent().getBooleanExtra("isFilter", false);
         if (isFilter) {
 
             poble = getIntent().getStringExtra("EXTRA_POBLE");
@@ -142,6 +142,7 @@ public class Llista extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), Informacio.class);
 
                 intent.putExtra("EXTRA_IDCONCERT", (int)arg3);
+                intent.putExtra("isFilter", isFilter);
                 startActivity(intent);
             }
         });
