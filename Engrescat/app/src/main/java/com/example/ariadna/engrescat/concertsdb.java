@@ -142,8 +142,8 @@ public class concertsdb {
                         "Pobl INTEGER NOT NULL,"+
                         "Preu REAL NOT NULL,"+
                         "Desc TEXT," +
-                        "Lon REAL NOT NULL,"+
                         "Lat REAL NOT NULL,"+
+                        "Lon REAL NOT NULL,"+
                         "FOREIGN KEY (Pobl) REFERENCES Poblacions(id)"+
                         ")";
 
@@ -266,8 +266,8 @@ public class concertsdb {
                 }
                 Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-                Float lon   = c.getFloat(c.getColumnIndexOrThrow("Lon"));
                 Float lat = c.getFloat(c.getColumnIndexOrThrow("Lat"));
+                Float lon   = c.getFloat(c.getColumnIndexOrThrow("Lon"));
                 Bitmap img = null;
 
                 // Llegim una imatge
@@ -279,7 +279,7 @@ public class concertsdb {
                 }catch (IOException io){
                     Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
-                resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc, lon, lat));
+                resultat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc, lat, lon));
             }
         }
         if (c != null) {
@@ -430,8 +430,8 @@ public class concertsdb {
                 }
                 Float preu = c.getFloat(c.getColumnIndexOrThrow("Preu"));
                 String desc  = c.getString(c.getColumnIndexOrThrow("Desc"));
-                Float lon   = c.getFloat(c.getColumnIndexOrThrow("Lon"));
                 Float lat = c.getFloat(c.getColumnIndexOrThrow("Lat"));
+                Float lon   = c.getFloat(c.getColumnIndexOrThrow("Lon"));
                 Bitmap img = null;
 
                 // Llegim una imatge
@@ -443,7 +443,7 @@ public class concertsdb {
                 }catch (IOException io){
                     Log.w("imatges", "ERROR llegint: " + file.getAbsolutePath().toString());
                 }
-                filtrat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc, lon, lat));
+                filtrat.add(new Concert(id, img, nom, grups, datahora, lloc, adr, pobl, preu, desc, lat, lon));
             }
         }
         if (c != null) {
@@ -452,6 +452,16 @@ public class concertsdb {
 
 
         return filtrat;
+    }
+
+    public static ArrayList<Concert> antllista (boolean isFilter) {
+        if (isFilter) {
+            return filtrat;
+        }
+        else{
+
+            return resultat;
+        }
     }
 
 

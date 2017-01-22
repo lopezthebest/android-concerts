@@ -28,16 +28,17 @@ public class Llista extends AppCompatActivity {
     private ArrayList<Concert>concerts;
     private ListView llc;
     private ConcertsAdapter adapter;
-    private ConcertsFilterAdapter fadapter;
     private String poble;
     private String data;
     private String grup;
+    boolean isFilter = false;
+    boolean antmapa =false;
 
 
     public class ConcertsAdapter extends ArrayAdapter<Concert> {
         ConcertsAdapter() {
             super(Llista.this, R.layout.item_concert,
-                   concertsdb.loadConcerts());
+                   concerts);
         }
 
         @Override
@@ -65,39 +66,6 @@ public class Llista extends AppCompatActivity {
             return result;
         }
     }
-
-    public class ConcertsFilterAdapter extends ArrayAdapter<Concert> {
-        ConcertsFilterAdapter() {
-            super(Llista.this, R.layout.item_concert,
-                    concertsdb.LoadFiltre(poble, data, grup));
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View result = convertView;
-            if (result == null) {
-                LayoutInflater inflater = getLayoutInflater();
-                result = inflater.inflate(R.layout.item_concert, parent, false);
-            }
-
-            // Referencias UI.
-
-            Concert con =getItem(position);
-            ImageView im=(ImageView)result.findViewById(R.id.imatge);
-            im.setImageBitmap(con.getImg());
-            TextView nom = (TextView) result.findViewById(R.id.nom_concert);
-            nom.setText(con.getNom());
-            TextView poble = (TextView)result.findViewById(R.id.poblacio);
-            poble.setText(con.getPobl());
-            TextView hora = (TextView) result.findViewById(R.id.hora);
-            hora.setText(con.getDataHora());
-            TextView preu = (TextView) result.findViewById(R.id.preu);
-            preu.setText(con.getPreu()+"€");
-
-            return result;
-        }
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,33 +76,31 @@ public class Llista extends AppCompatActivity {
 
         concertsdb.setContext(this);
 
-        final boolean isFilter = getIntent().getBooleanExtra("isFilter", false);
-        if (isFilter) {
+        llc=(ListView)findViewById(R.id.llc);
+
+        isFilter = getIntent().getBooleanExtra("isFilter", false);
+        antmapa =getIntent().getBooleanExtra("antmapa", false);
+        if (isFilter && !antmapa) {
 
             poble = getIntent().getStringExtra("EXTRA_POBLE");
             data = getIntent().getStringExtra("EXTRA_DATA");
             grup = getIntent().getStringExtra("EXTRA_GRUP");
 
-            fadapter = new ConcertsFilterAdapter();
-        }
-
-        else{
+            concerts=concertsdb.LoadFiltre(poble, data, grup);
             adapter = new ConcertsAdapter();
         }
 
-        concerts= new ArrayList<>();
-
-        //concerts=concertsdb.loadConcerts();
-
-        llc=(ListView)findViewById(R.id.llc);
-        if (isFilter) {
-            llc.setAdapter(fadapter);
+        else if (antmapa){
+            concerts=concertsdb.antllista(isFilter);
+            adapter = new ConcertsAdapter();
         }
+
         else{
-
-            llc.setAdapter(adapter);
+            concerts=concertsdb.loadConcerts();
+            adapter = new ConcertsAdapter();
         }
 
+        llc.setAdapter(adapter);
         llc.setClickable(true);
         llc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -155,6 +121,7 @@ public class Llista extends AppCompatActivity {
 
     public void obremapa(View view){
         Intent intent = new Intent(this,MapActivity.class);
+        intent.putExtra("isFilter", isFilter);
         startActivity(intent);
     }
 
