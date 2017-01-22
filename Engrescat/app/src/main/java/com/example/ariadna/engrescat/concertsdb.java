@@ -289,16 +289,34 @@ public class concertsdb {
         return resultat;
     }
 
-    public static Concert loadInfo(int pos){
-
-        Concert con= resultat.get(pos);
+    public static Concert loadInfo(int pos, boolean isFilter){
+        Concert con;
+        if (isFilter){
+            con= filtrat.get(pos);
+        }
+        else{
+            con= resultat.get(pos);
+        }
         return con;
     }
 
-    public static Concert loadFInfo(int pos){
-
-        Concert con= filtrat.get(pos);
-        return con;
+    public static Concert loadMInfo(String nom, boolean isFilter){
+        Concert con;
+        if (isFilter){
+            for(Concert c : filtrat) {
+                if(c.getNom().equals(nom)) {
+                    return c;
+                }
+            }
+        }
+        else{
+            for(Concert c : resultat) {
+                if(c.getNom().equals(nom)) {
+                    return c;
+                }
+            }
+        }
+        return null;
     }
 
     public static ArrayList<String> loadPoblacions(){

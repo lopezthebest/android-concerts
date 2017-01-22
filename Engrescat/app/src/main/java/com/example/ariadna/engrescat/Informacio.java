@@ -20,26 +20,29 @@ public class Informacio extends AppCompatActivity {
 
     private ArrayList<Concert>concerts;
     private ListView llg;
+    private  String _NomConcert;
     private int _IdConcert;
+    boolean antmapa =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacio);
 
-        _IdConcert = getIntent().getIntExtra("EXTRA_IDCONCERT", 0);
         final boolean isFilter = getIntent().getBooleanExtra("isFilter", false);
+        antmapa =getIntent().getBooleanExtra("antmapa", false);
 
         concertsdb.setContext(this);
 
 
         Concert con;
-        if (isFilter){
-            con=concertsdb.loadFInfo(_IdConcert);
+        if(antmapa){
+            _NomConcert=getIntent().getStringExtra("EXTRA_NOM");
+            con=concertsdb.loadMInfo(_NomConcert, isFilter);
         }
-
         else {
-            con = concertsdb.loadInfo(_IdConcert);
+            _IdConcert = getIntent().getIntExtra("EXTRA_IDCONCERT", 0);
+            con = concertsdb.loadInfo(_IdConcert, isFilter);
         }
 
         TextView nom = (TextView)findViewById(R.id.nom_concert);

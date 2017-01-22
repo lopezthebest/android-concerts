@@ -122,6 +122,7 @@ public class Concert {
     public Float getLon() { return Lon; }
 
     public void setLon(Float lon) { Lon = lon; }
+    
 
     @Override
     public String toString() {
