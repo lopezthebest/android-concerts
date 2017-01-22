@@ -271,7 +271,7 @@ public class concertsdb {
                 Bitmap img = null;
 
                 // Llegim una imatge
-                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".jpg");
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".png");
                 try{
                     FileInputStream fileInputStream = new FileInputStream(file);
                     img = BitmapFactory.decodeStream(fileInputStream);
@@ -453,7 +453,7 @@ public class concertsdb {
                 Bitmap img = null;
 
                 // Llegim una imatge
-                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".jpg");
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + CARPETA_PROPIA, "concert-" + id + ".png");
                 try{
                     FileInputStream fileInputStream = new FileInputStream(file);
                     img = BitmapFactory.decodeStream(fileInputStream);
