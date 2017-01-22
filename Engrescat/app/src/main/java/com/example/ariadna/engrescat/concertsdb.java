@@ -15,7 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -220,11 +223,18 @@ public class concertsdb {
             helper = new concertsDbHelper(context);
         }
 
+        resultat=new ArrayList<Concert>();
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-DD");
+        String d = df.format(Calendar.getInstance().getTime());
+        d=d+" 00:00";
+
         creaCarpeta();
 
         SQLiteDatabase db =helper.getReadableDatabase();
 
-        Cursor c = db.query("Concerts", null, null, null, null, null, null);
+        String s = "SELECT * from Concerts WHERE DataHora>='"+d+"' ORDER BY DataHora";
+        Cursor c = db.rawQuery(s, null);
         if (c != null && c.getCount() > 0) {
             while (c.moveToNext()) {
                 long id = c.getLong(c.getColumnIndexOrThrow("id"));
@@ -279,6 +289,57 @@ public class concertsdb {
         return con;
     }
 
+    public static ArrayList<String> loadPoblacions(){
+        if (helper == null) {
+            helper = new concertsDbHelper(context);
+        }
+
+        SQLiteDatabase db =helper.getReadableDatabase();
+
+        String select="SELECT Nom FROM Poblacions ORDER BY Nom ASC";
+        Cursor a=db.rawQuery(select, null);
+
+        ArrayList<String> poblacions=new ArrayList<>();
+        if (a != null && a.getCount() > 0) {
+            while (a.moveToNext()) {
+                String poblacio = a.getString(a.getColumnIndexOrThrow("Nom"));
+                poblacions.add(poblacio);
+            }
+        }
+
+        if (a != null) {
+            a.close();
+        }
+        db.close();
+        return poblacions;
+    }
+
+
+    public static ArrayList<String> loadGrups(){
+        if (helper == null) {
+            helper = new concertsDbHelper(context);
+        }
+
+        SQLiteDatabase db =helper.getReadableDatabase();
+
+        String select="SELECT Nom FROM Grups ORDER BY Nom ASC";
+        Cursor a=db.rawQuery(select, null);
+
+        ArrayList<String> grups=new ArrayList<>();
+        if (a != null && a.getCount() > 0) {
+            while (a.moveToNext()) {
+                String grup = a.getString(a.getColumnIndexOrThrow("Nom"));
+                grups.add(grup);
+            }
+        }
+
+        if (a != null) {
+            a.close();
+        }
+        db.close();
+        return grups;
+    }
+
     public static ArrayList<Concert> LoadFiltre (String pobl, String data, String grup){
         if (helper == null) {
             helper = new concertsDbHelper(context);
@@ -290,23 +351,18 @@ public class concertsdb {
         Long idg;
         String select= "SELECT * FROM Concerts";
         filtrat.clear();
-
-        Log.w("filtre","pobl -> '"+pobl+"'");
-        Log.w("filtre","data -> '"+data+"'");
-        Log.w("filtre","grup -> '"+grup+"'");
-
         if (!grup.equals("")){
-            String s1 = "SELECT id FROM Grups WHERE Nom = '" + grup + "'";
+            String s1 = "SELECT id FROM Grups WHERE Nom = '" + grup+"'";
             Cursor c1 = db.rawQuery(s1, null);
             if (c1 != null && c1.getCount() > 0) {
                 while (c1.moveToNext()) {
                     idg = c1.getLong(c1.getColumnIndexOrThrow("id"));
-                    select = select+ " INNER JOIN GrupConcertON Concerts.id=GrupConcert.Concert WHERE GrupConcert.Grup="+idg;
+                    select = select+ " INNER JOIN GrupConcert ON Concerts.id=GrupConcert.Concert WHERE GrupConcert.Grup="+idg;
                 }
             }
         }
         if (!pobl.equals("")) {
-            String s1 = "SELECT id FROM Poblacions WHERE Nom = '" + pobl + "'";
+            String s1 = "SELECT id FROM Poblacions WHERE Nom = '" + pobl+"'";
             Cursor c1 = db.rawQuery(s1, null);
             if (c1 != null && c1.getCount() > 0) {
                 while (c1.moveToNext()) {
@@ -317,10 +373,21 @@ public class concertsdb {
             }
         }
         if (!data.equals("")) {
-            String datai = data + " 00:00";
-            String dataf = data + " 23:59";
+            String datai = "'"+data + " 00:00'";
+            String dataf = "'"+data + " 23:59'";
             if (grup.equals("") && pobl.equals("")) select = select+" WHERE DataHora>="+datai+" AND DataHora<="+dataf;
             else select=select+" AND DataHora>="+datai+" AND DataHora<="+dataf;
+        }
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+        String d = df.format(Calendar.getInstance().getTime());
+
+        if (data.equals("")) {
+            if (grup.equals("") && pobl.equals("")) {
+                select = select + " WHERE DataHora>='" + d+"' ORDER BY DataHora";
+            } else if (!grup.equals("") || !pobl.equals("")) {
+                select = select + " AND DataHora>='" + d+"' ORDER BY DataHora";
+            }
         }
 
         Cursor c = db.rawQuery(select, null);

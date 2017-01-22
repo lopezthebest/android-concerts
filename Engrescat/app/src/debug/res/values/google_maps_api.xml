@@ -1,0 +1,21 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=58:D7:3C:03:90:F0:3B:6F:DE:FC:50:82:9C:18:AC:DC:64:12:16:C1%3Bcom.example.ariadna.engrescat
+
+    You can also add your credentials to an existing key, using this line:
+    58:D7:3C:03:90:F0:3B:6F:DE:FC:50:82:9C:18:AC:DC:64:12:16:C1;com.example.ariadna.engrescat
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBObWG3LdGQ4ZXbsg-1kVjGxKuqiCnu-Zo
+    </string>
+</resources>
