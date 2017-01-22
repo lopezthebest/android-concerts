@@ -23,11 +23,14 @@ public class activity_filtre extends AppCompatActivity {
     Spinner grupvalue;
     EditText datavalue;
     Calendar myCalendar;
+    boolean antmapa =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtre);
+
+        antmapa =getIntent().getBooleanExtra("antmapa", false);
 
         Button btn_cerca = (Button) findViewById(R.id.btn_cerca);
         poblevalue = (Spinner) findViewById(R.id.poblevalue);
@@ -52,16 +55,18 @@ public class activity_filtre extends AppCompatActivity {
                 String poble = poblevalue.getSelectedItem().toString().trim();
                 String data = datavalue.getText().toString().trim();
                 String grup = grupvalue.getSelectedItem().toString().trim();
+                concertsdb.LoadFiltre(poble, data, grup);
 
-                //ArrayList<Concert> filtrat = concertsdb.LoadFiltre(poble, data, grup);
-
-                Intent intent = new Intent(getApplicationContext(), Llista.class);
-                intent.putExtra("isFilter", true);
-                intent.putExtra("EXTRA_POBLE", poble);
-                intent.putExtra("EXTRA_DATA", data);
-                intent.putExtra("EXTRA_GRUP", grup);
-                startActivity(intent);
-
+                if (antmapa){
+                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                    intent.putExtra("isFilter", true);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), Llista.class);
+                    intent.putExtra("isFilter", true);
+                    startActivity(intent);
+                }
             }
         });
 

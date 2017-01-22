@@ -80,21 +80,11 @@ public class Llista extends AppCompatActivity {
 
         isFilter = getIntent().getBooleanExtra("isFilter", false);
         antmapa =getIntent().getBooleanExtra("antmapa", false);
-        if (isFilter && !antmapa) {
+        if (isFilter) {
 
-            poble = getIntent().getStringExtra("EXTRA_POBLE");
-            data = getIntent().getStringExtra("EXTRA_DATA");
-            grup = getIntent().getStringExtra("EXTRA_GRUP");
-
-            concerts=concertsdb.LoadFiltre(poble, data, grup);
-            adapter = new ConcertsAdapter();
-        }
-
-        else if (antmapa){
             concerts=concertsdb.antllista(isFilter);
             adapter = new ConcertsAdapter();
         }
-
         else{
             concerts=concertsdb.loadConcerts();
             adapter = new ConcertsAdapter();

@@ -21,7 +21,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private GoogleMap mMap;
     ArrayList<Concert> concerts;
     boolean isFilter=false;
-    boolean antmapa=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 Intent intent = new Intent(MapActivity.this, Informacio.class);
                 intent.putExtra("EXTRA_NOM", marker.getTitle());
                 intent.putExtra("isFilter", isFilter);
-                intent.putExtra("antmapa", antmapa);
+                intent.putExtra("antmapa", true);
                 startActivity(intent);
             }
         });
@@ -65,10 +64,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
+    public void filtra(View view){
+        Intent intent = new Intent(this,activity_filtre.class);
+        intent.putExtra("antmapa",true);
+        startActivity(intent);
+    }
+
     public void obrellista(View view){
         Intent intent = new Intent(this,Llista.class);
         intent.putExtra("isFilter", isFilter);
-        intent.putExtra("antmapa", antmapa);
+        intent.putExtra("antmapa", true);
         startActivity(intent);
     }
 }

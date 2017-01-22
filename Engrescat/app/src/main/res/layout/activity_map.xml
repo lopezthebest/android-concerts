@@ -29,4 +29,20 @@
         android:background="@color/colorPrimaryDark"
         android:textColor="@android:color/background_light" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/ic_menu_search"
+            android:id="@+id/filtrebtn"
+            android:onClick="filtra"
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="10sp"
+            app:backgroundTint="?attr/colorPrimaryDark"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            app:rippleColor="@android:color/white" />
+
 </RelativeLayout>
